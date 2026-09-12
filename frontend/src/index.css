@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* Clean Light Theme */
+    --bg-main: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-alt: #f1f5f9;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(15, 23, 42, 0.06);
+
+    --accent-terracotta: #C84B29;
+    --accent-mustard: #D89B28;
+    --accent-forest: #285B43;
+    --accent-ink: #183661;
+
+    --font-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  
+  html.dark {
+    color-scheme: dark;
+    /* Unified Sleek Slate Dark Theme */
+    --bg-main: #020617;
+    --bg-surface: #0f172a;
+    --bg-surface-alt: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+
+    --accent-terracotta: #FF6E40;
+    --accent-mustard: #FFB74D;
+    --accent-forest: #4CAF50;
+    --accent-ink: #64B5F6;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* =========================================================
+   Handcrafted Physical Elements (Tactile, Neo-Brutalist, Zine)
+   ========================================================= */
+
+/* Cards with modern subtle border and elevation */
+.craft-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -2px var(--shadow-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.craft-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px var(--shadow-color), 0 4px 6px -4px var(--shadow-color);
+}
+
+/* Static box without hover lift */
+.craft-box {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+/* Tactile pushable button */
+.tactile-btn {
+  font-family: var(--font-primary);
+  border: 2px solid var(--border-color);
+  box-shadow: 3px 3px 0px 0px var(--shadow-color);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tactile-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px var(--shadow-color);
+}
+
+.tactile-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px var(--shadow-color);
+}
+
+/* Physical Badge / Rubber Stamp */
+.craft-badge {
+  font-family: var(--font-mono);
+  border: 1.5px solid var(--border-color);
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  box-shadow: 1.5px 1.5px 0px 0px var(--shadow-color);
+}
+
+/* Tilted sticker effect */
+.craft-sticker {
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+}
+
+.craft-sticker-alt {
+  display: inline-block;
+  transform: rotate(1.5deg);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0px 0px var(--shadow-color);
+}
+
+/* Hand-drawn style highlight underline */
+.hand-drawn-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.hand-drawn-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 4px;
+  background-color: var(--accent-mustard);
+  border-radius: 2px;
+  transform: rotate(-0.8deg);
+}
+
+/* Legacy Glass Support Mapped to Craft */
+.glass-panel,
+.glass-card {
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-color);
+  box-shadow: 3px 3px 0px 0px var(--shadow-color);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border: 1.5px solid var(--border-color);
+}
