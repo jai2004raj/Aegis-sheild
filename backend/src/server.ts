@@ -77,8 +77,8 @@ app.use('/api/shifts', shiftRoutes);
 // Global Error Handler
 app.use(errorHandler);
 
-// Start Express Server if run directly
-if (process.env.NODE_ENV !== 'test') {
+// Start Express Server if run directly (skip on Vercel serverless)
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`[Server] Security Agency Backend running on port ${PORT}`);
     console.log(`[Server] Health check available at http://localhost:${PORT}/api/health`);
