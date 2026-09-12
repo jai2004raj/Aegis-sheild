@@ -30,7 +30,25 @@ connectDB();
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+      const allowedOrigins = [
+        process.env.FRONTEND_URL,
+        'http://localhost:5173',
+        'http://localhost:5000',
+        'https://aegis-sheild.vercel.app',
+      ].filter(Boolean);
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        process.env.NODE_ENV !== 'production'
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Permissive for easy deployment
+    },
     credentials: true,
   })
 );
@@ -59,8 +77,12 @@ app.use('/api/shifts', shiftRoutes);
 // Global Error Handler
 app.use(errorHandler);
 
-// Start Express Server
-app.listen(PORT, () => {
-  console.log(`[Server] Security Agency Backend running on port ${PORT}`);
-  console.log(`[Server] Health check available at http://localhost:${PORT}/api/health`);
-});
+// Start Express Server if run directly
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`[Server] Security Agency Backend running on port ${PORT}`);
+    console.log(`[Server] Health check available at http://localhost:${PORT}/api/health`);
+  });
+}
+
+export default app;
