@@ -17,6 +17,7 @@ import reviewRoutes from './routes/reviewRoutes';
 import contactRoutes from './routes/contactRoutes';
 import reportRoutes from './routes/reportRoutes';
 import shiftRoutes from './routes/shiftRoutes';
+import trackingRoutes from './routes/trackingRoutes';
 
 dotenv.config();
 
@@ -61,6 +62,20 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Security Agency API is running cleanly.', timestamp: new Date() });
 });
 
+// Ensure DB connection before handling API routes
+app.use(async (req, res, next) => {
+  if (req.path === '/api/health') return next();
+  try {
+    await connectDB();
+    next();
+  } catch (error: any) {
+    res.status(503).json({
+      message: 'Database connection failed. Please verify MongoDB connection string and network access.',
+      error: error.message,
+    });
+  }
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/workers', workerRoutes);
@@ -73,6 +88,8 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/shifts', shiftRoutes);
+app.use('/api/tracking', trackingRoutes);
+app.use('/api/track', trackingRoutes);
 
 // Global Error Handler
 app.use(errorHandler);

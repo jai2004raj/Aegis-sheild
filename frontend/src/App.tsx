@@ -47,8 +47,12 @@ import { CompanyWorkers } from './pages/company/CompanyWorkers';
 import { CompanyAttendance } from './pages/company/CompanyAttendance';
 import { CompanyAssignments } from './pages/company/CompanyAssignments';
 import { CompanyReviews } from './pages/company/CompanyReviews';
+import { trackVisitor } from './utils/visitorTracker';
 
 export const App: React.FC = () => {
+  React.useEffect(() => {
+    trackVisitor();
+  }, []);
   return (
     <BrowserRouter>
       <ThemeProvider>

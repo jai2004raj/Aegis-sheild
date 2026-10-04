@@ -1,18 +1,32 @@
 import mongoose from 'mongoose';
 
-let isConnected = false;
+let cachedPromise: Promise<typeof mongoose> | null = null;
 
-export const connectDB = async (): Promise<void> => {
-  if (isConnected || mongoose.connection.readyState >= 1) {
-    return;
+export const connectDB = async (): Promise<typeof mongoose> => {
+  if (mongoose.connection.readyState === 1) {
+    return mongoose;
   }
-  try {
+
+  if (!cachedPromise) {
     const connStr = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/security_agency';
-    const conn = await mongoose.connect(connStr);
-    isConnected = true;
-    console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
-    console.log(`[MongoDB] Database Name: ${conn.connection.name}`);
-  } catch (error) {
-    console.error('[MongoDB] Connection error:', error);
+    
+    cachedPromise = mongoose
+      .connect(connStr, {
+        serverSelectionTimeoutMS: 5000,
+        connectTimeoutMS: 10000,
+      })
+      .then((m) => {
+        console.log(`[MongoDB] Connected successfully to host: ${m.connection.host}`);
+        console.log(`[MongoDB] Database Name: ${m.connection.name}`);
+        return m;
+      })
+      .catch((err) => {
+        cachedPromise = null; // Clear cached promise on failure to allow retry
+        console.error('[MongoDB] Connection error:', err.message || err);
+        throw err;
+      });
   }
+
+  return cachedPromise;
 };
+
